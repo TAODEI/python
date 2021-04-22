@@ -8,6 +8,7 @@ class Ship():
 
         # 加载飞船图像并获取其外接矩形
         self.image = pygame.image.load('images/ship.bmp')
+        self.image = pygame.transform.scale(self.image, (100, 100))
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
@@ -27,7 +28,6 @@ class Ship():
         # 更新飞船的 center 值,而不是 rect
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center += self.ai_settings.ship_speed_factor
-            print(self.screen_rect.left)
         if self.moving_left and self.rect.left > self.screen_rect.left:
             self.center -= self.ai_settings.ship_speed_factor
 
