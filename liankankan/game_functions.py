@@ -12,6 +12,8 @@ def check_keydown_events(event, icons, ai_settings, screen):
             #if event.key is pygame.K_u:
             #if event.key is pygame.K_x:
              #   if event.key is pygame.K_i:
+        if len(icons) != 1 :
+            return
         for icon in icons:
             icons.remove(icon)
 
@@ -151,11 +153,15 @@ def straight_link(__map, p1, p2):
 
 def isOneCornerLink(__map, p1, p2):
     point_corner = Icon(p1.nx, p2.ny, 1)
+    point_corner.nx = p1.nx
+    point_corner.ny = p2.ny
     if straight_link(__map, p1, point_corner) and straight_link(__map, point_corner, p2) and isEmptyInMap(__map, point_corner):
         #return point_corner
         return 1
 
     point_corner = Icon(p2.nx, p1.ny, 1)
+    point_corner.nx = p2.nx
+    point_corner.ny = p1.ny
     if straight_link(__map, p1, point_corner) and straight_link(__map, point_corner, p2) and isEmptyInMap(__map, point_corner):
         return 1 #point_corner
 
@@ -163,6 +169,10 @@ def isTwoCornerLink(__map, p1, p2):
     for y in range(-1, 9 + 1):
         point_corner1 = Icon(p1.nx, y, 1)
         point_corner2 = Icon(p2.nx, y, 1)
+        point_corner1.nx = p1.nx
+        point_corner1.ny = y
+        point_corner2.nx = p2.nx
+        point_corner2.ny = y
         if y == p1.ny or y == p2.ny:
             continue
         if y == -1 or y == 9:
@@ -176,6 +186,10 @@ def isTwoCornerLink(__map, p1, p2):
     for x in range(-1, 9 + 1):
         point_corner1 = Icon(x, p1.ny, 1)
         point_corner2 = Icon(x, p2.ny, 1)
+        point_corner1.nx = x
+        point_corner1.ny = p1.ny
+        point_corner2.nx = x
+        point_corner2.ny = p2.ny
         if x == p1.nx or x == p2.nx:
             continue
         if x == -1 or x == 9:
