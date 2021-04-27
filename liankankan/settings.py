@@ -7,4 +7,5 @@ class Settings():
         self.bg_color = (100, 200, 230)
 
         # 图标设置
-        #self
+        
+        self.game_size = 6

@@ -2,8 +2,6 @@ import pygame
 from pygame.sprite import Sprite
 
 class Icon(Sprite):
-    __gameSize = 10 # 游戏尺寸
-    __iconKind = __gameSize * __gameSize / 4 # 小图片种类数量
     __iconWidth = 40
     __iconHeight = 40
 
