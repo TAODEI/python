@@ -3,6 +3,7 @@ class GameStats():
         self.ai_settings = ai_settings
         self.reset_stats()
         self.game_active = 0
+        self.time = 25
 
     def reset_stats(self):
         a = 1

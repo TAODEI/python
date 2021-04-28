@@ -1,12 +1,9 @@
 import sys
 import pygame
 import random
-from button import Button
-from pygame.sprite import Group
-
 from icon import Icon
 
-def check_keydown_events(event, icons, ai_settings, screen, stats):
+def check_keydown_events(event, icons, stats):
     """相应按键"""
     if event.key is pygame.K_q:
         sys.exit()
@@ -27,7 +24,7 @@ def check_events(ai_settings, screen, stats, play_button, icons, __map):
         if event.type is pygame.QUIT:
             sys.exit()
         elif event.type is pygame.KEYDOWN:
-            check_keydown_events(event, icons, ai_settings, screen, stats)
+            check_keydown_events(event, icons, stats)
         elif event.type is pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             if mouse_x > 220 + 70 and mouse_x - 220 < 10 * 70 and mouse_y > 70 and mouse_y < 10 * 70:
@@ -43,11 +40,13 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, __map, ai_settings, 
         create_icons(ai_settings, screen, icons, __map)
         
 
-def update_screen(ai_settings, screen, icons, stats, button):
+def update_screen(ai_settings, screen, icons, stats, button, time_board):
     """ 更新屏幕上的图像,并切换到新屏幕 """
     # 每次循环时都重绘屏幕
     screen.fill(ai_settings.bg_color)
     icons.draw(screen)
+
+    time_board.show_time()
 
     if stats.game_active < 1:
         button.draw_button()
@@ -296,4 +295,5 @@ def is_gg(__map, stats, ai_settings):
     stats.game_active = 0
     if ai_settings.game_size == 6:
         ai_settings.increase_size()
+        stats.time = 65
     print("game over")
