@@ -9,3 +9,6 @@ class Settings():
         # 图标设置
         
         self.game_size = 6
+
+    def increase_size(self):
+        self.game_size = 9
