@@ -11,20 +11,13 @@ def check_keydown_events(event, icons, ai_settings, screen, stats):
     if event.key is pygame.K_q:
         sys.exit()
     elif event.key is pygame.K_m:
-        #for event in pygame.event.get():
-            #if event.key is pygame.K_u:
-            #if event.key is pygame.K_x:
-             #   if event.key is pygame.K_i:
-        #if len(icons) != 1 :
-            #return
+        if len(icons) != 1 :
+            return
         for icon in icons:
             icons.remove(icon)
-        button = Button(ai_settings, screen, "GAME OVER!")
-        screen.fill(ai_settings.bg_color)
-
-        button.draw_button()
+        stats.game_active = -1
         # 让最近绘制的屏幕可见
-        pygame.display.flip()
+        #pygame.display.flip()
         #update_screen(ai_settings, screen, icons, stats, button)
         #pygame.rect.draw(screen, )
 
@@ -45,7 +38,7 @@ def check_events(ai_settings, screen, stats, play_button, icons, __map):
 def check_play_button(stats, play_button, mouse_x, mouse_y, __map, ai_settings, screen, icons):
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
-        stats.game_active = True
+        stats.game_active = 1
         stats.reset_stats()
         create_icons(ai_settings, screen, icons, __map)
         
@@ -56,7 +49,7 @@ def update_screen(ai_settings, screen, icons, stats, button):
     screen.fill(ai_settings.bg_color)
     icons.draw(screen)
 
-    if not stats.game_active:
+    if stats.game_active < 1:
         button.draw_button()
     # 让最近绘制的屏幕可见
     pygame.display.flip()
@@ -136,7 +129,7 @@ def point_icon(mouse_x, mouse_y, screen, __map, stats, icons, ai_settings):
     y = int(mouse_y / 70 - 1)
     if __map[y][x]:
         icon = __map[y][x]
-        if icon.num == -1 or stats.game_active is False:
+        if icon.num == -1 or stats.game_active == 0:
             return
         # 取消选择
         if icon.ok:
@@ -152,7 +145,6 @@ def point_icon(mouse_x, mouse_y, screen, __map, stats, icons, ai_settings):
 def point_icon_yes(ai_settings, __map, icons, screen, x, y):
     icon = __map[y][x]
     __icon = []
-    t = -1
     for i in range(ai_settings.game_size):
         for j in range(ai_settings.game_size):
             if __map[i][j].red is True and i != x and j != y:
@@ -160,7 +152,6 @@ def point_icon_yes(ai_settings, __map, icons, screen, x, y):
                 icons.remove(__icon[0])
                 __map[i][j].num = -1
                 __map[__icon[1]][__icon[2]].num = -1
-                t = -1
                 # 重建原icon
                 ic_2 = create_icon(ai_settings, screen, icons, y, x, icon.num)
                 __map[i][j] = ic_2
@@ -210,13 +201,10 @@ def clear_icons(__map, icons, x, ai_settings, stats, screen):
 def check_ok(__map, p1, p2, ai_settings):
     if p1.num == p2.num:
         if straight_link(__map, p1, p2):
-            print("直连")
             return True
         if isOneCornerLink(__map, p1, p2):
-            print("一个")
             return True
         if isTwoCornerLink(__map, p1, p2, ai_settings):
-            print("两个")
             return True
     return False
 
@@ -305,7 +293,7 @@ def is_gg(__map, stats, ai_settings):
             icon = __map[i][j]
             if icon.num != -1:
                 return
-    stats.game_active = False
+    stats.game_active = 0
     if ai_settings.game_size == 6:
         ai_settings.increase_size()
     print("game over")
